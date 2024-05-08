@@ -2,6 +2,8 @@ import numpy as np
 
 ROW_COUNT = 6
 COLUMN_COUNT = 7
+ROWS_TO_WIN = 4
+COLUMNS_TO_WIN = 4
 game_over = False
 turn = 0
 
@@ -26,21 +28,21 @@ def print_board(board):
 def winning_move(board, piece):
     for r in range(ROW_COUNT):
         for c in range(COLUMN_COUNT):
-            if c <= COLUMN_COUNT - 4:
+            if c <= COLUMN_COUNT - COLUMNS_TO_WIN:
                 # Horizontal wins
-                if all(board[r][c+i] == piece for i in range(4)):
+                if all(board[r][c+i] == piece for i in range(COLUMNS_TO_WIN)):
                     return True
                 
                 # Positive diagonal wins
-                if r <= ROW_COUNT - 4 and all(board[r+i][c+i] == piece for i in range(4)):
+                if r <= ROW_COUNT - ROWS_TO_WIN and all(board[r+i][c+i] == piece for i in range(ROWS_TO_WIN)):
                     return True
                 
             # Vertical wins
-            if r <= ROW_COUNT - 4 and all(board[r+i][c] == piece for i in range(4)):
+            if r <= ROW_COUNT - ROWS_TO_WIN and all(board[r+i][c] == piece for i in range(ROWS_TO_WIN)):
                 return True
                 
             # Negative diagonal wins
-            if (c <= COLUMN_COUNT - 4 and r >= 3) and all(board[r-i][c+i] == piece for i in range(4)):
+            if c <= COLUMN_COUNT - COLUMNS_TO_WIN and r >= ROWS_TO_WIN-1 and all(board[r-i][c+i] == piece for i in range(COLUMNS_TO_WIN)):
                 return True
             
 board = create_board()
