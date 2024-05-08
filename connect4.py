@@ -24,9 +24,6 @@ def print_board(board):
     print(np.flip(board, 0))
 
 def winning_move(board, piece):
-    return 0
-
-def winning_move(board, piece):
     for r in range(ROW_COUNT):
         for c in range(COLUMN_COUNT):
             if c <= COLUMN_COUNT - 4:
