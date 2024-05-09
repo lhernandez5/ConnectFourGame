@@ -81,6 +81,7 @@ def draw_board(board):
     draw_board_background()
     draw_board_pieces(board)
 
+
 def draw_board_background():
     for c in range(COLUMN_COUNT):
         for r in range(ROW_COUNT):
@@ -157,11 +158,13 @@ while not game_over:
                     row = get_next_open_row(board, col)
                     drop_piece(board, row, col, 1)
 
-                    if winning_move(board, 1):
-                        label = win_font.render("Player 1 wins!!", 1, RED)
+                    if winning_move(board, 1):  
+                        draw_board(board)
+                        pygame.display.update()
+                        label = win_font.render("Player R wins!!", 1, RED)
                         screen.blit(label, (40, 10))
                         game_over = True
-            # #Ask for Player 2 input
+            # Ask for Player 2 input
             else:
                 posx = event.pos[0]
                 col = int(math.floor(posx / SQUARE_SIZE))
@@ -170,7 +173,9 @@ while not game_over:
                     row = get_next_open_row(board, col)
                     drop_piece(board, row, col, 2)
                     if winning_move(board, 2):
-                        label = win_font.render("Player 2 wins!!", 1, YELLOW)
+                        draw_board(board)
+                        pygame.display.update()
+                        label = win_font.render("Player Y wins!!", 1, YELLOW)
                         screen.blit(label, (40, 10))
                         game_over = True
 
@@ -182,6 +187,4 @@ while not game_over:
             if game_over:
                 board = create_board()
                 draw_board(board)
-                game_over = False 
-                
-                 
+                game_over = False
