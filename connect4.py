@@ -14,9 +14,15 @@ BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
+SQUARE_SIZE = 100
+RADIUS = int(SQUARE_SIZE/2 - 5)
 game_over = False
 turn = 0
 win_font = pygame.font.SysFont("monospace", 75)
+width = COLUMN_COUNT * SQUARE_SIZE
+height = (ROW_COUNT+1) * SQUARE_SIZE
+size = (width, height)
+screen = pygame.display.set_mode(size, pygame.RESIZABLE)
 
 def create_board():
     board= np.zeros((ROW_COUNT,COLUMN_COUNT))
@@ -57,27 +63,30 @@ def winning_move(board, piece):
                 return True
 
 def draw_board(board):
+    draw_board_background()
+    draw_board_pieces(board)
+    pygame.display.update()
+
+def draw_board_background():
     for c in range(COLUMN_COUNT):
         for r in range(ROW_COUNT):
             pygame.draw.rect(screen, BLUE, (c*SQUARE_SIZE, r*SQUARE_SIZE+SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
             pygame.draw.circle(screen, BLACK, (int(c*SQUARE_SIZE+SQUARE_SIZE/2), int(r*SQUARE_SIZE+SQUARE_SIZE+SQUARE_SIZE/2)), RADIUS)
 
+def draw_board_pieces(board):
     for c in range(COLUMN_COUNT):
         for r in range(ROW_COUNT):
             if board[r][c] == 1:
-               pygame.draw.circle(screen, RED, (int(c*SQUARE_SIZE+SQUARE_SIZE/2), height-int(r*SQUARE_SIZE+SQUARE_SIZE/2)), RADIUS)
+                draw_piece(RED, c, r)
             elif board[r][c] == 2:
-                pygame.draw.circle(screen, YELLOW, (int(c*SQUARE_SIZE+SQUARE_SIZE/2), height-int(r*SQUARE_SIZE+SQUARE_SIZE/2)), RADIUS)
-    pygame.display.update()
+                draw_piece(YELLOW, c, r)
+
+def draw_piece(color, column, row):
+    pygame.draw.circle(screen, color, (int(column*SQUARE_SIZE+SQUARE_SIZE/2), height-int(row*SQUARE_SIZE+SQUARE_SIZE/2)), RADIUS)
+    
 
 board = create_board()
 print_board(board)
-SQUARE_SIZE = 100
-width = COLUMN_COUNT * SQUARE_SIZE
-height = (ROW_COUNT+1) * SQUARE_SIZE
-RADIUS = int(SQUARE_SIZE/2 - 5)
-size = (width, height)
-screen = pygame.display.set_mode(size, pygame.RESIZABLE)
 draw_board(board)
 pygame.display.update()
 
