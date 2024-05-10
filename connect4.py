@@ -127,6 +127,57 @@ def draw_piece(color, column, row):
     )
 
 
+def handle_mouse_button_down(event, turn):
+    pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARE_SIZE))
+    posx = event.pos[0]
+
+    turn = turn
+    game_over = False
+
+    if event.type == pygame.MOUSEMOTION:
+        color = RED if turn == 0 else YELLOW
+        pygame.draw.circle(screen, color, (posx, int(SQUARE_SIZE / 2)), RADIUS)
+        pygame.display.update()
+
+    elif event.type == pygame.MOUSEBUTTONDOWN:
+        col = int(math.floor(posx / SQUARE_SIZE))
+        player = 1 if turn == 0 else 2
+
+        if is_valid_space(board, col):
+            row = get_next_open_row(board, col)
+            drop_piece(board, row, col, player)
+
+            if winning_move(board, player):
+                draw_winner_message(player)
+                game_over = True
+
+        print_board(board)
+        draw_board(board)
+        turn += 1
+        turn %= 2
+
+        if game_over:
+            reset_game()
+    return turn
+
+
+def draw_winner_message(player):
+    color = "RED" if player == 1 else "YELLOW"
+    draw_board(board)
+    pygame.display.update()
+    label = win_font.render(f"{color} wins!!", 1, color)
+    screen.blit(label, (40, 10))
+    pygame.display.update()
+
+
+def reset_game():
+    global board, game_over
+    board = create_board()
+    draw_board(board)
+    game_over = False
+    return board, game_over
+
+
 board = create_board()
 print_board(board)
 draw_board(board)
@@ -137,54 +188,5 @@ while not game_over:
         if event.type == pygame.QUIT:
             sys.exit()
 
-        if event.type == pygame.MOUSEMOTION:
-            pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARE_SIZE))
-            posx = event.pos[0]
-            if turn == 0:
-                pygame.draw.circle(screen, RED, (posx, int(SQUARE_SIZE / 2)), RADIUS)
-            else:
-                pygame.draw.circle(screen, YELLOW, (posx, int(SQUARE_SIZE / 2)), RADIUS)
-        pygame.display.update()
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARE_SIZE))
-            print(event.pos)
-            # Ask for Player 1 input
-            if turn == 0:
-                posx = event.pos[0]
-                col = int(math.floor(posx / SQUARE_SIZE))
-
-                if is_valid_space(board, col):
-                    row = get_next_open_row(board, col)
-                    drop_piece(board, row, col, 1)
-
-                    if winning_move(board, 1):  
-                        draw_board(board)
-                        pygame.display.update()
-                        label = win_font.render("Player R wins!!", 1, RED)
-                        screen.blit(label, (40, 10))
-                        game_over = True
-            # Ask for Player 2 input
-            else:
-                posx = event.pos[0]
-                col = int(math.floor(posx / SQUARE_SIZE))
-
-                if is_valid_space(board, col):
-                    row = get_next_open_row(board, col)
-                    drop_piece(board, row, col, 2)
-                    if winning_move(board, 2):
-                        draw_board(board)
-                        pygame.display.update()
-                        label = win_font.render("Player Y wins!!", 1, YELLOW)
-                        screen.blit(label, (40, 10))
-                        game_over = True
-
-            print_board(board)
-            draw_board(board)
-            turn += 1
-            turn = turn % 2
-
-            if game_over:
-                board = create_board()
-                draw_board(board)
-                game_over = False
+        if event.type == pygame.MOUSEMOTION or event.type == pygame.MOUSEBUTTONDOWN:
+            turn = handle_mouse_button_down(event, turn)
