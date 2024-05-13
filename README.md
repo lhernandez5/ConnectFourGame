@@ -1,6 +1,14 @@
 # ConnectFourGame
 
+Steps to play game on command line:
 
+1. Make sure to have python installed along with pip(package manager needed to install packages).
+For Python3 Version on Mac
+   On the Terminal window, type the following command and press Enter:
+    python3 --version
+3. Pip install numpy and pygame.
+4. Aftwards you can run the app by:
+   python3 connect4.py  
 
 Video of game play.
 
