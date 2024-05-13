@@ -2,12 +2,11 @@
 
 Steps to play game on command line:
 
-1. Make sure to have python installed along with pip(package manager needed to install packages).
-For Python3 Version on Mac
+1. Make sure to have python installed along with pip.
    On the Terminal window, type the following command and press Enter:
     python3 --version
 3. Pip install numpy and pygame.
-4. Aftwards you can run the app by:
+4. Aftwards you can run the app by typing:
    python3 connect4.py  
 
 Video of game play.
