@@ -1,4 +1,4 @@
-# ConnectFourGame
+# Connect Four Game
 
 Steps to play game on command line:
 
